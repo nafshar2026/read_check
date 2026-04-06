@@ -1,4 +1,46 @@
-pytesseract>=0.3.10
+# check_extractor requirements
+# Install with: pip install -r requirements.txt
+#
+# IMPORTANT - install in this exact order to avoid conflicts:
+#   pip install -r requirements.txt
+#
+# If you still get oneDNN errors, run this instead:
+#   pip uninstall paddlepaddle paddleocr opencv-python numpy -y
+#   pip install -r requirements.txt
+
+# ── NumPy must be pinned FIRST before anything else ──────────────────────────
+numpy<2.0
+
+# ── PaddlePaddle — CPU build with oneDNN disabled ────────────────────────────
+# The standard paddlepaddle package on Windows enables oneDNN by default which
+# causes: "OneDnnContext does not have the input Filter"
+# This specific wheel is the plain CPU build without oneDNN:
+paddlepaddle==2.6.2
+
+# ── PaddleOCR ────────────────────────────────────────────────────────────────
+paddleocr==2.7.3
+
+# ── Image processing — pinned to version paddleocr 2.7.3 requires ────────────
+opencv-python==4.6.0.66
 Pillow>=10.0.0
-opencv-python>=4.8.0
-numpy>=1.24.0
+
+# ── Optional fallback OCR ────────────────────────────────────────────────────
+# pytesseract>=0.3.10
+# Also requires the Tesseract binary:
+#   Windows : https://github.com/UB-Mannheim/tesseract/wiki
+#   macOS   : brew install tesseract
+#   Linux   : sudo apt install tesseract-ocr
+
+# ── Claude Vision API (check_extractor_vision.py) ────────────────────────────
+# Much more accurate than PaddleOCR — no local model needed.
+# Requires an Anthropic API key: https://console.anthropic.com/
+anthropic>=0.25.0
+
+# ── Google Gemini Vision API (check_extractor_gemini.py) — FREE ──────────────
+# Free tier: 15 requests/minute, 1500 requests/day — no credit card needed
+# Get a free API key at: https://aistudio.google.com/
+# NOTE: google-generativeai is deprecated — use google-genai instead
+google-genai>=1.0.0
+
+# ── .env file support ─────────────────────────────────────────────────────────
+python-dotenv>=1.0.0

@@ -1,0 +1,34 @@
+# conda.yaml
+# Azure ML environment definition for check_extractor
+#
+# Register with:
+#   az ml environment create \
+#     --name check-extractor-env \
+#     --conda-file conda.yaml \
+#     --image mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04
+#
+# Or via the Azure ML Studio UI:
+#   Environments → Custom environments → Create → Upload this file
+
+name: check-extractor
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip:
+      # ── PaddlePaddle ───────────────────────────────────────────────────────
+      # Use paddlepaddle-gpu for NC/ND series VMs (GPU compute)
+      # Use paddlepaddle     for DS/D  series VMs (CPU-only compute)
+      - paddlepaddle-gpu
+      # - paddlepaddle
+
+      # ── PaddleOCR ──────────────────────────────────────────────────────────
+      - paddleocr>=2.7.3
+
+      # ── Image processing ───────────────────────────────────────────────────
+      # IMPORTANT: use opencv-python-headless on Linux — the standard
+      # opencv-python package requires a display (X server) which is not
+      # available on Azure ML compute nodes.
+      - opencv-python-headless>=4.8.0
+      - Pillow>=10.0.0
+      - numpy>=1.24.0
